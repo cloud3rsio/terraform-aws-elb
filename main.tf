@@ -4,7 +4,7 @@ resource "aws_lb" "main" {
   name               = "${var.name}"
   internal           = "${var.internal}"
   load_balancer_type = "${var.load_balancer_type}"
-  security_groups    = "${var.security_groups}"
+  security_groups    = ["${aws_security_group.main.id}"]
   subnets            = "${var.subnets}"
 
   enable_deletion_protection       = "${var.enable_deletion_protection}"
@@ -16,6 +16,36 @@ resource "aws_lb" "main" {
     bucket  = "${var.create_logging_bucket ? aws_s3_bucket.main.id : var.access_logs_bucket}"
     prefix  = "${var.access_logs_prefix}"
     enabled = "${var.enabled_access_logs}"
+  }
+
+  tags = "${merge(var.tags,map("Name", format("%s", var.name)), map("ModuleSource", var.module_source))}"
+}
+
+resource "aws_security_group" "main" {
+  count = "${var.create_elb ? 1 : 0}"
+
+  name   = "${var.name}"
+  vpc_id = "${var.vpc_id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = "${merge(var.tags,map("Name", format("%s", var.name)), map("ModuleSource", var.module_source))}"

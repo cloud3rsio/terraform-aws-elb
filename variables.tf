@@ -18,10 +18,6 @@ variable "load_balancer_type" {
   default = "application"
 }
 
-variable "security_groups" {
-  default = []
-}
-
 variable "subnets" {
   default = []
 }
@@ -99,5 +95,9 @@ variable "acm_validation_method" {
 }
 
 variable "target_group_arn" {
+  default = ""
+}
+
+variable "vpc_id" {
   default = ""
 }

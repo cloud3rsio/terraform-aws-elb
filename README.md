@@ -8,6 +8,7 @@ These types of resources are supported:
 * [ELB Listener]()
 * [S3](https://www.terraform.io/docs/providers/aws/r/s3_bucket.html)
 * [ACM]()
+* [Security Group]()
 
 ## Usage
 
@@ -15,14 +16,13 @@ These types of resources are supported:
 module "elb" {
   source = "github.com/cloud3rsio/terraform-aws-elb"
 
-  name            = "simple-elb"
-  subnets         = ["subnet-00000000", "subnet-11111111", "subnet-22222222"]
-  security_groups = ["sg-00000000"]
-
+  name             = "simple-elb"
+  vpc_id           = "vpc-0000000"
+  subnets          = ["subnet-00000000", "subnet-11111111", "subnet-22222222"]
   target_group_arn = "arn:aws:elasticloadbalancing:ap-northeast-1:00000000:targetgroup/targetgroup-name/000000000000"
 
   enabled_https   = true
-  acm_domain_name = "tf-test.tmp.cloud3rs.io"
+  acm_domain_name = "example.cloud3rs.io"
 
   tags = {
     Environment = "development"

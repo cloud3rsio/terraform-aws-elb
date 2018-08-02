@@ -54,16 +54,8 @@ output "acm_domain_name" {
   value = "${element(concat(aws_acm_certificate.main.*.domain_name, list("")), 0)}"
 }
 
-output "acm_resource_record_name" {
-  value = "${element(concat(aws_acm_certificate.main.*.domain_validation_options.0.resource_record_name, list("")), 0)}"
-}
-
-output "acm_resource_record_type" {
-  value = "${element(concat(aws_acm_certificate.main.*.domain_validation_options.0.resource_record_type, list("")), 0)}"
-}
-
-output "acm_resource_record_value" {
-  value = "${element(concat(aws_acm_certificate.main.*.domain_validation_options.0.resource_record_value, list("")), 0)}"
+output "acm_domain_validation_options" {
+  value = "${flatten(aws_acm_certificate.main.*.domain_validation_options)}"
 }
 
 output "elb_listener_http_arn" {

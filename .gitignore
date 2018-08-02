@@ -13,4 +13,5 @@
 
 .envrc
 .terraform/
+.terraform*
 terraform.tfstate*
