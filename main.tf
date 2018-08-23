@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "main" {
 resource "aws_s3_bucket" "main" {
   count = "${var.create_logging_bucket ? 1 : 0}"
 
-  bucket        = "${var.name}"
+  bucket_prefix = "${var.name}"
   acl           = "private"
   policy        = "${data.aws_iam_policy_document.main.json}"
   force_destroy = "${var.logging_bucket_force_destroy}"
